@@ -73,7 +73,7 @@ function tieBreaker(playerA, playerB) {
 }
 
 function playGame(game) {
-  while (true) {
+  while (game.activePlayer.totalStock > 0) {
     const { activePlayer, board } = game;
     const matchingTile = doesStockMatchEnds(board, activePlayer);
     if (matchingTile) {
@@ -83,13 +83,12 @@ function playGame(game) {
     } else {
       const { playerA, playerB } = game;
       if (playerA.blocked && playerB.blocked) {
-        break
+        break;
       }
     }
 
     if (activePlayer.totalStock === 0) {
       game.setWinner();
-      break
     } else {
       game.setActivePlayer();
     }
