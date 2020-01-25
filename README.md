@@ -42,7 +42,6 @@ Alice plays <0:1> to connect to tile <1:5> on the board
 Board is now: <0:1> <1:5> <5:5> <5:0> <0:4> <4:1> <1:1> <1:6> <6:6> <6:4> <4:3> <3:0> <0:2> <2:3>
 Player Alice has won!
 ```
-Please pay close attention to correctness, clarity and understandability of the code you write.
 
 ## Setup
 
