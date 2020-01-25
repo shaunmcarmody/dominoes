@@ -1,7 +1,6 @@
 const Board = require('./Board');
 const Player = require('./Player');
 
-// Initialise Dominoes Object
 const dominoes = {
   activePlayer: null,
   board: new Board(),
