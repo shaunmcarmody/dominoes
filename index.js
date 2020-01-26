@@ -19,6 +19,21 @@ const dominoes = {
   },
 };
 
+console.log('\n');
+initiateGame(dominoes);
+console.log('\n');
+
+function activePlayerPlays(game) {
+  const { activePlayer, board } = game;
+  const matchingTile = doesStockMatchEnds(board, activePlayer);
+  if (matchingTile) {
+    const end = handleMatchingTile(board, matchingTile);
+    console.log(`${activePlayer.name} plays ${matchingTile.getAsString()} to connect to tile ${end.getAsString()} on the board`);
+    board.getChainAsString();
+  }
+  return activePlayer;
+}
+
 function doesStockMatchEnds(board, player) {
   const { getEnds, getNewTile } = board;
   const {
@@ -48,6 +63,22 @@ function handleMatchingTile(board, tile) {
   return board.setRear(tile);
 }
 
+function playDominoes(game) {
+  while (game.activePlayer.totalStock > 0) {
+    // if both players are blocked then break out of game
+    if (game.playerA.blocked && game.playerB.blocked) break;
+    const activePlayer = activePlayerPlays(game);
+    const { totalStock } = activePlayer;
+
+    if (totalStock > 0) {
+      game.setActivePlayer();
+    } else {
+      game.setWinner();
+    }
+  }
+  return game;
+}
+
 
 function setStartingParams(game) {
   for (let i = 0; i < 7; i += 1) {
@@ -71,35 +102,13 @@ function tieBreaker(playerA, playerB) {
   }
 }
 
-function playGame(game) {
-  while (game.activePlayer.totalStock > 0) {
-    const { activePlayer, board } = game;
-    const matchingTile = doesStockMatchEnds(board, activePlayer);
-    if (matchingTile) {
-      const end = handleMatchingTile(board, matchingTile);
-      console.log(`${activePlayer.name} plays ${matchingTile.getAsString()} to connect to tile ${end.getAsString()} on the board`);
-      board.getChainAsString();
-    } else {
-      const { playerA, playerB } = game;
-      if (playerA.blocked && playerB.blocked) {
-        break;
-      }
-    }
 
-    if (activePlayer.totalStock === 0) {
-      game.setWinner();
-    } else {
-      game.setActivePlayer();
-    }
-  }
-  const { playerA, playerB, winner } = game;
+function initiateGame(game) {
+  setStartingParams(game);
+  const { playerA, playerB, winner } = playDominoes(game);
   if (winner) {
     console.log(`Player ${winner.name} has won!`);
   } else {
     tieBreaker(playerA, playerB);
   }
 }
-
-setStartingParams(dominoes);
-playGame(dominoes);
-console.log('\n');
