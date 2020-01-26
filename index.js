@@ -63,6 +63,16 @@ function handleMatchingTile(board, tile) {
   return board.setRear(tile);
 }
 
+function initiateGame(game) {
+  setStartingParams(game);
+  const { playerA, playerB, winner } = playDominoes(game);
+  if (winner) {
+    console.log(`Player ${winner.name} has won!`);
+  } else {
+    tieBreaker(playerA, playerB);
+  }
+}
+
 function playDominoes(game) {
   while (game.activePlayer.totalStock > 0) {
     // if both players are blocked then break out of game
@@ -99,16 +109,5 @@ function tieBreaker(playerA, playerB) {
     console.log('Match ends draw!');
   } else {
     console.log(`Player ${playerASum < playerBSum ? playerA.name : playerB.name} has won!`);
-  }
-}
-
-
-function initiateGame(game) {
-  setStartingParams(game);
-  const { playerA, playerB, winner } = playDominoes(game);
-  if (winner) {
-    console.log(`Player ${winner.name} has won!`);
-  } else {
-    tieBreaker(playerA, playerB);
   }
 }
