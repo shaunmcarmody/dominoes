@@ -35,22 +35,14 @@ function activePlayerPlays(game) {
 }
 
 function doesStockMatchEnds(board, player) {
-  const { getEnds, getNewTile } = board;
-  const {
-    getMatchingTile, name, setAsBlocked, setAsUnblocked, setInStock,
-  } = player;
+  const { getEnds } = board;
+  const { getMatchingTile, setAsBlocked } = player;
   const matchingTile = getMatchingTile(...getEnds());
   if (!matchingTile) {
     setAsBlocked();
-    const tile = getNewTile();
-    if (!tile) {
-      console.log(`${name} can't play and is unable to draw tile`);
-      return tile;
-    }
-    setInStock(tile);
-    return doesStockMatchEnds(board, player);
+    return playerDrawsNewTile(board, player)
   }
-  setAsUnblocked();
+
   return matchingTile;
 }
 
@@ -87,6 +79,26 @@ function playDominoes(game) {
     }
   }
   return game;
+}
+
+function playerDrawsNewTile(board, player) {
+  const { getEnds, getNewTile } = board;
+  const { name, setAsUnblocked, setInStock } = player;
+  const [ front, rear ] = getEnds()
+  const tile = getNewTile();
+
+  if (!tile) {
+    console.log(`${name} can't play and is unable to draw tile`);
+    return tile;
+  }
+
+  if (tile.ends.includes(front) || tile.ends.includes(rear)) {
+    setAsUnblocked();
+    return tile;
+  }
+
+  setInStock(tile);
+  return playerDrawsNewTile(board, player)
 }
 
 
