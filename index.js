@@ -40,7 +40,7 @@ function doesStockMatchEnds(board, player) {
   const matchingTile = getMatchingTile(...getEnds());
   if (!matchingTile) {
     setAsBlocked();
-    return playerDrawsNewTile(board, player)
+    return playerDrawsNewTile(board, player);
   }
 
   return matchingTile;
@@ -84,7 +84,7 @@ function playDominoes(game) {
 function playerDrawsNewTile(board, player) {
   const { getEnds, getNewTile } = board;
   const { name, setAsUnblocked, setInStock } = player;
-  const [ front, rear ] = getEnds()
+  const [front, rear] = getEnds();
   const tile = getNewTile();
 
   if (!tile) {
@@ -98,7 +98,7 @@ function playerDrawsNewTile(board, player) {
   }
 
   setInStock(tile);
-  return playerDrawsNewTile(board, player)
+  return playerDrawsNewTile(board, player);
 }
 
 
